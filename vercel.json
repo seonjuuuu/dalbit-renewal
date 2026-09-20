@@ -7,9 +7,16 @@
       "headers": [
         { "key": "Content-Type", "value": "application/rss+xml; charset=UTF-8" }
       ]
+    },
+    {
+      "source": "/rss",
+      "headers": [
+        { "key": "Content-Type", "value": "application/rss+xml; charset=UTF-8" }
+      ]
     }
   ],
   "rewrites": [
+    { "source": "/rss", "destination": "/rss.xml" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
