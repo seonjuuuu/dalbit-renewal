@@ -3,7 +3,7 @@ import { Phone } from "lucide-react";
 import { toast } from "sonner";
 
 const CHARACTER_VIDEO = "/dalbit-character-working-loop.mp4";
-const CHARACTER_POSTER = "/manus-storage/dalbit-video-keyframe_f9e1ec36.png";
+const CHARACTER_POSTER = "/dalbit-character-poster.png";
 const DALBIT_LOGO = "/dalbit-work-logo.png";
 const CONSULTATION_API_URL =
   import.meta.env.VITE_CONSULTATION_API_URL ||
