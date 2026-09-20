@@ -16,6 +16,7 @@ function Spark({ className }: { className: string }) {
 export default function Home() {
   const [isConsultationOpen, setIsConsultationOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [agreedToPrivacy, setAgreedToPrivacy] = useState(false);
   const [consultation, setConsultation] = useState({
     name: "",
     company: "",
@@ -59,6 +60,7 @@ export default function Home() {
         budget: "협의 후 결정",
         message: "",
       });
+      setAgreedToPrivacy(false);
       setIsConsultationOpen(false);
     } catch (error) {
       toast.error("신청 접수에 실패했어요. 잠시 후 다시 시도하거나 이메일로 문의해 주세요.");
@@ -261,6 +263,17 @@ export default function Home() {
                   placeholder="원하시는 홈페이지의 방향이나 궁금한 점을 자유롭게 적어주세요."
                 />
               </label>
+              <label className="consent-check">
+                <input
+                  type="checkbox"
+                  required
+                  checked={agreedToPrivacy}
+                  onChange={(event) => setAgreedToPrivacy(event.target.checked)}
+                />
+                <span>
+                  <a href="/privacy" target="_blank" rel="noreferrer">개인정보처리방침</a>에 동의합니다 <b>*</b>
+                </span>
+              </label>
               <button className="consultation-submit" type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "접수 중..." : "상담 신청 보내기"} <span aria-hidden="true">↗</span>
               </button>
@@ -272,6 +285,7 @@ export default function Home() {
       <footer className="site-footer">
         <p>© DALBIT WORK</p>
         <p>WEB DESIGN · BRAND EXPERIENCE</p>
+        <a className="footer-privacy-link" href="/privacy">개인정보처리방침</a>
       </footer>
     </main>
   );
