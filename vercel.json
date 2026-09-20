@@ -1,6 +1,14 @@
 {
   "buildCommand": "vite build && node scripts/build-prerender.mjs",
   "outputDirectory": "dist/public",
+  "headers": [
+    {
+      "source": "/rss.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/rss+xml; charset=UTF-8" }
+      ]
+    }
+  ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
