@@ -1,8 +1,13 @@
 import { FormEvent, useEffect, useState } from "react";
+import { Phone } from "lucide-react";
+import { toast } from "sonner";
 
 const CHARACTER_VIDEO = "/dalbit-character-working-loop.mp4";
 const CHARACTER_POSTER = "/manus-storage/dalbit-video-keyframe_f9e1ec36.png";
 const DALBIT_LOGO = "/dalbit-work-logo.png";
+const CONSULTATION_API_URL =
+  import.meta.env.VITE_CONSULTATION_API_URL ||
+  "https://dalbitwork-estimate-5zcu.vercel.app/api/public/consultations";
 
 function Spark({ className }: { className: string }) {
   return <span aria-hidden="true" className={`spark ${className}`} />;
@@ -10,10 +15,13 @@ function Spark({ className }: { className: string }) {
 
 export default function Home() {
   const [isConsultationOpen, setIsConsultationOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [consultation, setConsultation] = useState({
     name: "",
+    company: "",
     contact: "",
     service: "홈페이지 제작 · 리뉴얼",
+    budget: "협의 후 결정",
     message: "",
   });
 
@@ -28,23 +36,35 @@ export default function Home() {
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, [isConsultationOpen]);
 
-  const submitConsultation = (event: FormEvent<HTMLFormElement>) => {
+  const submitConsultation = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const subject = encodeURIComponent(`[상담 신청] ${consultation.name}님`);
-    const body = encodeURIComponent(
-      [
-        "DALBIT WORK 상담 신청",
-        "",
-        `이름: ${consultation.name}`,
-        `연락처: ${consultation.contact}`,
-        `상담 분야: ${consultation.service}`,
-        "",
-        "문의 내용",
-        consultation.message || "내용 미입력",
-      ].join("\n"),
-    );
+    if (isSubmitting) return;
 
-    window.location.href = `mailto:dalbit.work@gmail.com?subject=${subject}&body=${body}`;
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(CONSULTATION_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(consultation),
+      });
+
+      if (!response.ok) throw new Error("submit failed");
+
+      toast.success("상담 신청이 접수되었습니다. 빠르게 연락드릴게요!");
+      setConsultation({
+        name: "",
+        company: "",
+        contact: "",
+        service: "홈페이지 제작 · 리뉴얼",
+        budget: "협의 후 결정",
+        message: "",
+      });
+      setIsConsultationOpen(false);
+    } catch (error) {
+      toast.error("신청 접수에 실패했어요. 잠시 후 다시 시도하거나 이메일로 문의해 주세요.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -55,7 +75,12 @@ export default function Home() {
         <a className="brand" href="#top" aria-label="DALBIT WORK 홈">
           <img className="brand-logo" src={DALBIT_LOGO} alt="DALBIT WORK" />
         </a>
-        <span className="header-status"><i /> RENEWAL IN PROGRESS</span>
+        <div className="header-right">
+          <span className="header-status"><i /> RENEWAL IN PROGRESS</span>
+          <a className="call-button" href="tel:01027579116" aria-label="전화로 문의하기">
+            <Phone size={16} strokeWidth={2.4} aria-hidden="true" />
+          </a>
+        </div>
       </header>
 
       <section className="hero" id="top" aria-labelledby="renewal-title">
@@ -67,38 +92,54 @@ export default function Home() {
             있어요<span className="smile">:)</span>
           </h1>
           <p className="intro">
-            달빛워크는 브랜드에 어울리는 홈페이지와 랜딩페이지를 만듭니다.<br />
-            더 나은 모습으로 만나기 위해 현재 리뉴얼 중이에요.
+            달빛워크는 당신의 브랜드가 환하게 빛날 수 있도록<br />
+            홈페이지와 랜딩페이지를 만드는 제작 스튜디오입니다.
           </p>
           <div className="service-list" aria-label="제공 서비스">
             <span>홈페이지 제작</span>
             <span>랜딩페이지</span>
             <span>웹디자인</span>
           </div>
+
+          <a
+            className="renewal-notice"
+            href="https://imweb.me/expert/profile/i9vo0jnh"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span className="renewal-notice-text">
+              지금 홈페이지는 새 모습으로 리뉴얼 중이에요.<br />
+              그동안 진행한 작업물이 궁금하시다면 포트폴리오에서 만나보세요.
+            </span>
+            <span className="renewal-notice-cta">
+              포트폴리오 보러가기 <span className="arrow" aria-hidden="true">↗</span>
+            </span>
+          </a>
+
           <div className="contact-block">
-            <button
-              className="contact-link"
-              type="button"
-              onClick={() => setIsConsultationOpen(true)}
-              aria-haspopup="dialog"
-            >
-              <span className="contact-label">홈페이지 제작 상담</span>
-              <strong>무료 상담 신청하기</strong>
-              <span className="arrow" aria-hidden="true">↗</span>
-            </button>
+            <div className="primary-actions">
+              <button
+                className="contact-link"
+                type="button"
+                onClick={() => setIsConsultationOpen(true)}
+                aria-haspopup="dialog"
+              >
+                <span className="contact-label">홈페이지 제작 상담</span>
+                <strong>무료 상담 신청하기</strong>
+                <span className="arrow" aria-hidden="true">↗</span>
+              </button>
+              <a className="call-cta" href="tel:01027579116" aria-label="전화로 바로 문의하기 010-2757-9116">
+                <Phone size={18} strokeWidth={2.4} aria-hidden="true" />
+                <span>바로 통화하기</span>
+              </a>
+            </div>
+            <p className="consultation-hours">
+              상담 가능 시간 · 오전 10시 ~ 오후 7시<br />
+              공휴일 · 주말 휴무
+            </p>
             <a className="direct-email" href="mailto:dalbit.work@gmail.com">
               <span>이메일로 바로 문의</span>
               <strong>dalbit.work@gmail.com</strong>
-            </a>
-            <a
-              className="portfolio-link"
-              href="https://imweb.me/expert/profile/i9vo0jnh"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span>아임웹 전문가 프로필</span>
-              <strong>포트폴리오 보러가기</strong>
-              <span className="arrow" aria-hidden="true">↗</span>
             </a>
           </div>
         </div>
@@ -147,12 +188,14 @@ export default function Home() {
             >
               ×
             </button>
-            <p className="modal-kicker">TELL US A LITTLE</p>
-            <h2 id="consultation-title">상담을<br />남겨주세요.</h2>
-            <p className="modal-description">
-              내용을 작성해 주시면 메일 작성 창으로 연결됩니다.<br />
-              확인 후 빠르게 답변드릴게요.
-            </p>
+            <div className="modal-header">
+              <p className="modal-kicker">TELL US A LITTLE</p>
+              <h2 id="consultation-title">상담을<br />남겨주세요.</h2>
+              <p className="modal-description">
+                작성해 주신 내용은 바로 접수돼요.<br />
+                확인 후 빠르게 연락드릴게요.
+              </p>
+            </div>
             <form className="consultation-form" onSubmit={submitConsultation}>
               <label>
                 <span>이름 <b>*</b></span>
@@ -162,6 +205,15 @@ export default function Home() {
                   value={consultation.name}
                   onChange={(event) => setConsultation({ ...consultation, name: event.target.value })}
                   placeholder="성함을 입력해 주세요"
+                />
+              </label>
+              <label>
+                <span>회사명</span>
+                <input
+                  autoComplete="organization"
+                  value={consultation.company}
+                  onChange={(event) => setConsultation({ ...consultation, company: event.target.value })}
+                  placeholder="회사명 또는 상호명을 입력해 주세요"
                 />
               </label>
               <label>
@@ -188,6 +240,19 @@ export default function Home() {
                 </select>
               </label>
               <label>
+                <span>예산</span>
+                <select
+                  value={consultation.budget}
+                  onChange={(event) => setConsultation({ ...consultation, budget: event.target.value })}
+                >
+                  <option>협의 후 결정</option>
+                  <option>100만원 미만</option>
+                  <option>100 ~ 200만원</option>
+                  <option>200 ~ 300만원</option>
+                  <option>300만원 이상</option>
+                </select>
+              </label>
+              <label>
                 <span>문의 내용</span>
                 <textarea
                   rows={4}
@@ -196,8 +261,8 @@ export default function Home() {
                   placeholder="원하시는 홈페이지의 방향이나 궁금한 점을 자유롭게 적어주세요."
                 />
               </label>
-              <button className="consultation-submit" type="submit">
-                메일로 상담 신청 보내기 <span aria-hidden="true">↗</span>
+              <button className="consultation-submit" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "접수 중..." : "상담 신청 보내기"} <span aria-hidden="true">↗</span>
               </button>
             </form>
           </div>

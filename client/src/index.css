@@ -66,6 +66,22 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 0.055em;
 }
 .header-status i { width: 7px; height: 7px; border-radius: 50%; background: var(--yellow); box-shadow: 0 0 0 4px rgba(255, 196, 0, 0.2); }
+.header-right { display: inline-flex; align-items: center; gap: 16px; }
+.call-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--ink);
+  background: var(--yellow);
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out), background 180ms var(--ease-out);
+}
+.call-button:hover { background: #ffcf23; box-shadow: 5px 5px 0 var(--ink); transform: translate(-2px, -2px); }
+.call-button:active { box-shadow: 1px 1px 0 var(--ink); transform: translate(2px, 2px) scale(0.96); }
 
 .hero {
   width: min(100% - 64px, 1440px);
@@ -150,13 +166,13 @@ h1 em::after {
   font-size: 9px;
   letter-spacing: -0.04em;
 }
+.primary-actions { display: flex; flex-wrap: wrap; align-items: stretch; gap: 12px; margin-top: 34px; }
 .contact-link {
   display: grid;
   grid-template-columns: 1fr auto;
   column-gap: 24px;
   align-items: center;
   min-width: min(100%, 300px);
-  margin-top: 34px;
   padding: 12px 14px 13px;
   color: var(--ink);
   background: var(--yellow);
@@ -174,6 +190,31 @@ h1 em::after {
 .contact-link:hover { background: #ffcf23; box-shadow: 8px 8px 0 var(--ink); transform: translate(-3px, -3px); }
 .contact-link:hover .arrow { transform: translate(2px, -2px); }
 .contact-link:active { box-shadow: 1px 1px 0 var(--ink); transform: translate(3px, 3px) scale(0.98); }
+.call-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 18px;
+  color: var(--ink);
+  background: #fffdf7;
+  border: 1px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  white-space: nowrap;
+  transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out), background 180ms var(--ease-out);
+}
+.call-cta:hover { background: var(--yellow); box-shadow: 8px 8px 0 var(--ink); transform: translate(-3px, -3px); }
+.call-cta:active { box-shadow: 1px 1px 0 var(--ink); transform: translate(3px, 3px) scale(0.98); }
+.consultation-hours {
+  margin: 14px 0 0;
+  color: #756f62;
+  font-family: "DM Mono", "Noto Sans KR", sans-serif;
+  font-size: 10.5px;
+  line-height: 1.7;
+  letter-spacing: -0.02em;
+}
 .contact-block { display: flex; flex-direction: column; align-items: flex-start; }
 .direct-email {
   display: flex;
@@ -189,25 +230,44 @@ h1 em::after {
 .direct-email strong { color: var(--ink); font-family: "DM Mono", monospace; font-size: 12px; font-weight: 500; letter-spacing: -0.06em; }
 .direct-email:hover { color: var(--yellow-deep); transform: translateX(3px); }
 .direct-email:hover strong { color: var(--yellow-deep); }
-.portfolio-link {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  column-gap: 18px;
-  width: min(100%, 300px);
-  margin-top: 20px;
-  padding: 11px 12px 10px;
-  color: var(--ink);
+.renewal-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  width: 100%;
+  max-width: 560px;
+  margin-top: 22px;
+  padding: 14px 18px;
   background: #fffdf7;
-  border: 1px solid var(--ink);
-  box-shadow: 3px 3px 0 #d4cdbd;
-  transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out), background 160ms var(--ease-out);
+  border: 1px dashed #b9b2a0;
+  border-radius: 2px;
+  transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out), border-color 160ms var(--ease-out);
 }
-.portfolio-link > span:first-child { grid-column: 1; color: #756f62; font-family: "DM Mono", "Noto Sans KR", sans-serif; font-size: 8px; letter-spacing: -0.04em; }
-.portfolio-link strong { grid-column: 1; margin-top: 2px; font-size: 13px; font-weight: 800; letter-spacing: -0.05em; }
-.portfolio-link .arrow { grid-column: 2; grid-row: 1 / span 2; align-self: center; font-family: "DM Mono", monospace; font-size: 19px; transition: transform 160ms var(--ease-out); }
-.portfolio-link:hover { background: var(--yellow); box-shadow: 6px 6px 0 var(--ink); transform: translate(-2px, -2px); }
-.portfolio-link:hover .arrow { transform: translate(2px, -2px); }
-.portfolio-link:active { box-shadow: 1px 1px 0 var(--ink); transform: translate(2px, 2px) scale(0.98); }
+.renewal-notice-text {
+  color: #5e5b54;
+  font-family: "Gowun Dodum", sans-serif;
+  font-size: 12.5px;
+  line-height: 1.6;
+  letter-spacing: -0.02em;
+}
+.renewal-notice-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  color: var(--ink);
+  font-family: "DM Mono", "Noto Sans KR", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+.renewal-notice-cta .arrow { font-size: 15px; transition: transform 160ms var(--ease-out); }
+.renewal-notice:hover { border-color: var(--yellow-deep); box-shadow: 4px 4px 0 var(--yellow); transform: translate(-2px, -2px); }
+.renewal-notice:hover .arrow { transform: translate(2px, -2px); }
+.renewal-notice:active { box-shadow: 1px 1px 0 var(--yellow); transform: translate(1px, 1px); }
 
 .character-area {
   position: relative;
@@ -297,15 +357,18 @@ h1 em::after {
 .consultation-modal {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
   width: min(100%, 505px);
   max-height: min(860px, calc(100svh - 48px));
-  overflow-y: auto;
+  overflow: hidden;
   padding: 48px;
   background: #fffdf7;
   border: 1.5px solid var(--ink);
   box-shadow: 12px 14px 0 var(--yellow);
   animation: modal-enter 240ms var(--ease-out) both;
 }
+.modal-header { flex: 0 0 auto; }
 .modal-close {
   position: absolute;
   top: 16px;
@@ -328,7 +391,7 @@ h1 em::after {
 .modal-kicker { margin: 0 0 17px; color: var(--yellow-deep); font-family: "DM Mono", monospace; font-size: 10px; letter-spacing: 0.03em; }
 .consultation-modal h2 { margin: 0; color: var(--ink); font-size: clamp(36px, 8vw, 52px); font-weight: 800; letter-spacing: -0.085em; line-height: 1.16; }
 .modal-description { margin: 20px 0 29px; color: #68645b; font-family: "Gowun Dodum", sans-serif; font-size: 14px; line-height: 1.75; letter-spacing: -0.025em; }
-.consultation-form { display: grid; gap: 17px; }
+.consultation-form { display: grid; gap: 17px; flex: 1 1 auto; min-height: 0; overflow-y: auto; padding-right: 4px; margin-right: -4px; }
 .consultation-form label { display: grid; gap: 8px; }
 .consultation-form label > span { color: #38352e; font-family: "Noto Sans KR", sans-serif; font-size: 12px; font-weight: 700; letter-spacing: -0.04em; }
 .consultation-form label b { color: var(--yellow-deep); }
@@ -407,16 +470,19 @@ h1 em::after {
   .intro { margin-top: 26px; font-size: 14px; line-height: 1.75; }
   .service-list { gap: 5px; margin-top: 17px; }
   .service-list span { padding: 5px 6px 4px; font-size: 8px; }
-  .contact-link { min-width: min(100%, 268px); margin-top: 25px; padding: 10px 11px 11px; box-shadow: 4px 4px 0 var(--ink); font-size: 13px; }
+  .primary-actions { margin-top: 25px; gap: 10px; }
+  .contact-link { min-width: min(100%, 268px); padding: 10px 11px 11px; box-shadow: 4px 4px 0 var(--ink); font-size: 13px; }
   .contact-label { font-size: 8px; }
   .contact-link .arrow { font-size: 20px; }
+  .call-cta { padding: 10px 14px; box-shadow: 4px 4px 0 var(--ink); font-size: 12px; }
+  .consultation-hours { margin-top: 12px; font-size: 10px; }
   .direct-email { margin-top: 13px; }
   .direct-email span { font-size: 9px; }
   .direct-email strong { font-size: 10px; }
-  .portfolio-link { width: min(100%, 268px); margin-top: 17px; padding: 9px 10px 8px; }
-  .portfolio-link > span:first-child { font-size: 7px; }
-  .portfolio-link strong { font-size: 11px; }
-  .portfolio-link .arrow { font-size: 17px; }
+  .renewal-notice { margin-top: 16px; padding: 12px 14px; }
+  .renewal-notice-text { font-size: 11.5px; }
+  .renewal-notice-cta { font-size: 11px; }
+  .renewal-notice-cta .arrow { font-size: 13px; }
   .character-area { min-height: 473px; }
   .character-frame { width: min(48vw, 245px); box-shadow: 8px 9px 0 var(--ink); }
   .motion-caption { right: 1%; bottom: 8%; font-size: 7px; padding: 8px 9px 7px; box-shadow: 4px 4px 0 var(--yellow); }
